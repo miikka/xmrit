@@ -378,15 +378,27 @@ export function createXmrChart(
   container: HTMLElement,
   options: XmrChartOptions
 ): XmrChartInstance {
+  // Create wrapper flex container for side-by-side layout
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "flex";
+  wrapper.style.flexDirection = "row";
+  wrapper.style.width = "100%";
+  wrapper.style.height = "100%";
+  wrapper.style.overflow = "hidden";
+
   // Create child divs for X and MR charts
   const xDiv = document.createElement("div");
-  xDiv.style.width = "100%";
-  xDiv.style.height = "50%";
+  xDiv.style.flex = "1 1 0";
+  xDiv.style.minWidth = "0";
+  xDiv.style.height = "100%";
   const mrDiv = document.createElement("div");
-  mrDiv.style.width = "100%";
-  mrDiv.style.height = "50%";
-  container.appendChild(xDiv);
-  container.appendChild(mrDiv);
+  mrDiv.style.flex = "1 1 0";
+  mrDiv.style.minWidth = "0";
+  mrDiv.style.height = "100%";
+
+  wrapper.appendChild(xDiv);
+  wrapper.appendChild(mrDiv);
+  container.appendChild(wrapper);
 
   // Initialize ECharts instances
   const xplot = initEChart(xDiv);
@@ -475,8 +487,7 @@ export function createXmrChart(
       mrObserver.disconnect();
       xplot.dispose();
       mrplot.dispose();
-      container.removeChild(xDiv);
-      container.removeChild(mrDiv);
+      container.removeChild(wrapper);
     },
   };
 }
